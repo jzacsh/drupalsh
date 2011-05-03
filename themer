@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+#toggle `module_name` module on and off
+
+if [[ -z ${1//-*/} ]];then
+    if [[ $1 = '-h' || $1 = '--help' ]];then
+        echo "
+        Synopsis: Toggle drupal [module] on/off.
+
+        Usage: $(basename $0) -c [module]
+            -c  Just run a check if the given module is/isn't enabled.
+        " >&2
+        return 1
+    fi
+
+    o=${1}; shift
+    case ${o/-/} in
+        c):
+            #only _CHECK_ if our module is on
+            opt_check=1
+            ;;
+        *):
+            echo "error: '${o}' is not a valid flag." >&2
+            exit 1
+            ;;
+    esac
+fi
+
+#set the module name
+n=${1:-devel_themer}
+
+#run "check only" option
+if (( opt_check ));then
+    drush pm-list | grep -i "${n}"
+    exit $?
+fi
+
+#run normally
+[[ $(drush pm-list | grep ${n} | grep 'Enabled') ]] && drush -y dis ${n} || drush -y en ${n}
+

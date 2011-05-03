@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# jump you to your current stable or edge code-base.
+#@TODO: abstract this out
+
+#@TODO: look at the TODO in PROJECT_BASE declaration -- PROJECT_BASE needs
+# to be dynamic, because of utilities like this function.
+repo=$PROJECT_BASE
+if [[ $1 = 'edge' ]];then
+    repo=$PROJECT_EDGE
+    shift
+fi
+cd $repo/${@} || cd $repo;

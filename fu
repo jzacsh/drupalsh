@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+# `features` updates.
+# easily do a the equivelent of `drush features update`, but with *new*
+# tarballs that the features interface has given you.
+local dbg=
+if [[ $(echo ${1} | grep tar$) ]];then
+    [[ $dbg ]] && printf "DEBUG: found tarball to be %s\n" "$download"
+    local download=$1
+else
+    printf 'usage: fu feature_name-X.x-#.#.tar\n'
+    printf ' eg.: step 1: `cd /path/to/exact/feature/` \n'
+    printf '            step 2: `cp /path/to/tarball .` \n'
+    printf '            step 3: `fu ./name-of-tarball` \n'
+    return 1
+fi
+
+(( vb )) && printf 'unpacking feature: \n'
+tar xvf ${download}
+(( vb )) && printf 'finished unpacking.\n'
+
+(( vb )) && printf '\nupdating feature:\n'
+local feature=$(tar tf $download | sed -e '1s|/.*$|/|;q')
+# sanity check:
+local current="$(pwd | sed -e 's|.*/||g')/"
+if [[ $current != $feature ]]; then
+        printf 'looks like you are unpacking in the WRONG directory....\n'
+        printf "    feature being unpacked: %s\n" "$feature"
+        printf "    your current directory: %s\n" "$current"
+        printf 'Are you SURE you want to continue? [y/N] '; read answ
+        [[ $answ == 'y' || $answ == 'Y' ]] || return 1
+fi
+
+[[ $dbg ]] && printf "DEBUG: found local directory to be: %s\n" "$feature"
+for file in $(find $feature -type f);do
+    [[ $dbg ]] && printf "DEBUG: found local directory to be: %s\n" "$feature"
+    mv -v $file $(echo $file | sed -e "s|$feature||")
+done
+(( vb )) && printf 'finished updating.\n'
+
+(( vb )) && printf "\njunk: %s %s \n" "$feature" "$download"
+(( vb )) && printf 'cleanup junk, here? [Y/n] '; read answ
+if [[ $answ == 'n' || $answ == 'N' ]]; then
+    return 0
+else
+    #play it safe && exit using curious code
+
+    [[ $download = '/' ]] && exit 99
+    rm -rfv ${download}
+
+    [[ $feature = '/' ]] && exit 99
+    rm -rfv ${feature}
+fi
+

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+#quick launch for root mysql innotop
+
+if [[ ! -r ~/.netrc ]];then
+    printf "error: ~/.netrc could not be found.\n" >&2
+    exit 1
+elif [[ ! $(type innotop) ]];then
+    printf 'error: I am a wrapper around `innotop`, which was not found.\n' >&2
+    exit 1
+fi
+
+creds=$(sed  -n '/mysql/ { n;N;N;p }' ~/.netrc)
+
+innotop \
+    --user=$(printf "${creds/*machine /}" | head -n 1) \
+    --password=$(printf "${creds/*password /}" | head -n 1) \
+    --host=$(printf "${creds/*password /}" | head -n 1)
