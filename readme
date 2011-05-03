@@ -5,6 +5,7 @@ drupal scripts/modules (like drush or features).
 
 
 # @TODO ##############################################################
+- sub-shell hell prevents dproj from being a script; see its comments
 - Place documentation/examples in here on power of PROJECT_BASE stuff.
 - make PROJECT_BASE more powerful by porting it to dynamic scripts that sit in
   this repository.
