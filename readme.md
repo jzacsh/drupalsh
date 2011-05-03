@@ -7,6 +7,10 @@ Shell scripts I use everyday, working with drupal.
 All scripts here are fairly simple in function. They mostly wrap popular
 drupal scripts/modules (like drush or features).
 
+Usage
+------------
+Rmff.. I'll write something here soon.
+
 Installation
 ------------
 You basically only need bash and drupal.
@@ -29,6 +33,3 @@ TODO
 - make PROJECT_BASE more powerful by porting it to dynamic scripts that sit in
   this repository ( eg.: commit 8164176 ) .
 
-Usage
-------------
-Rmff.. I'll write something here soon.
