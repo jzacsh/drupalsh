@@ -2,7 +2,9 @@
 
 #
 # functions and helpers made specifically for drupal development
-# @TODO: cannot call these as stand-alone (PITA). Turn these into scripts.
+#
+# @TODO: cannot call these as stand-alone (PITA). Turn those, that are capable,
+# into scripts.
 #
 
 #@TODO: breaks my heart to make this an entire script... think of something else!
@@ -75,3 +77,19 @@ cozy_local() {
     done
 }
 
+#
+# must stay as functions:
+#
+
+# jump you to your current stable or edge code-base.
+dpr() {
+    #@TODO: look at the TODO in PROJECT_BASE declaration -- PROJECT_BASE needs
+    # to be dynamic, because of utilities like this function.
+
+    local repo=$PROJECT_BASE
+    if [[ $1 = 'edge' ]];then
+        repo=$PROJECT_EDGE
+        shift
+    fi
+    cd $repo/${@} || cd $repo;
+}
