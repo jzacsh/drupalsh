@@ -1,0 +1,4 @@
+Shell scripts I use everyday, working with drupal.
+
+All scripts here are fairly simple in function. They mostly wrap popular
+drupal scripts/modules (like drush or features).
