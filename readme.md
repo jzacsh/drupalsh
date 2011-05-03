@@ -2,10 +2,10 @@
 
 ###About###
 ------------
-Shell scripts I use everyday, working with drupal.
+Shell scripts that often come in handy, working with drupal.
 
-All scripts here are fairly simple in function. They mostly wrap popular
-drupal scripts/modules (like drush or features).
+All scripts here are fairly simple in function. They're mostly wrappers around other popular
+drupal utilities (scripts/modules like [drush](http://drupal.org/project/drush) or [features](http://drupal.org/project/features)).
 
 Usage
 ------------
@@ -15,7 +15,7 @@ Installation
 ------------
 You basically only need bash and drupal.
 
-These scripts just need to be in your path. eg.: Download these, add them to your path:
+These scripts just need to be in your [PATH](http://en.wikipedia.org/wiki/Path_(variable)) [env. variable](http://en.wikipedia.org/wiki/Environment_variable). eg.: Download this repo and add it to your path:
 
     git clone git://github.com/jzacsh/drupalsh ~/drupalsh
     export PATH=~/drupalsh/:$PATH
@@ -32,4 +32,3 @@ TODO
 - Place documentation/examples in here on power of PROJECT_BASE stuff.
 - make PROJECT_BASE more powerful by porting it to dynamic scripts that sit in
   this repository ( eg.: commit 8164176 ) .
-
