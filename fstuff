@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+#
+# easy "project" searching; wrapping `grep` with my PROJECT_BASE vars.
+
+#@TODO: remove this crap from all scripts!
+source ~/bin/local/libbzsh
+[[ -r ~/bin/local/libbzsh ]] || return 99
+
+OPT_DB=0
+OPT_VB=0
+
+####################################################################################
+
+usage() {
+    printf "
+    synopsis:\n\t\`find\` code and stuff. wrapper to run grep on the usual code base.\n
+    usage: %s -[m] [grep opts] [-e] search_terms [grep params]
+    \tparameters:
+    \t\tsearch_terms is a string you would like to find
+    \toptional:
+    \t\t-e used to indicate multiple search_terms [see grep (1) ]
+    \t\t--massive run grep on all of PROJECT_BASE
+    \t\t-n clean-run: check for env vars that will be used and exit.
+    \t\t (NOTE: This option only works when no other params are passed).
+    \t\t\`grep\` is run, by default on CB environment parameter.
+    " $(basename $0) >&2
+    exit 2
+}
+
+#sanity check:
+if (( $# < 1 ));then
+    err 'not enough parameters.'
+    usage
+elif [[ $1 = '-h' || $1 = '--help' ]]; then
+    usage
+fi
+
+####################################################################################
+
+# for now, PROJECT_BASE is a safe bet:
+if [[ ! $(declare -p PROJECT_BASE) ]];then
+    dbg 'found one of your env. vars'
+    if [[ $1 == "--massive" ]];then
+        dbg 'setting "massive" search param'
+        BASE=${PROJECT_BASE}
+        shift
+    else
+        dbg 'setting "$CB" search param'
+        BASE=$CB
+    fi
+else
+    dbg 'found NO env vars (CB or PROJECT_BASE).'
+fi
+
+#act as direct wrapping to grep
+if [[ -z $BASE ]];then
+    BASE='' #safe null
+    if [[ if_debug ]] ;then
+        warn "no 'code base' env vars found..\n assuming you provided the files to search, see grep(1)."
+    fi
+fi
+
+check_env() {
+    dbg "testing if PROJECT_BASE (project codebase) has been set:"
+    if_debug && declare -p PROJECT_BASE
+
+    dbg "testing if CB (main codebase) has been set:"
+    if_debug && declare -p CB
+
+    dbg "testing if BASE has been decided:"
+    if_debug && declare -p BASE
+}
+
+if (( $# == 1 )) && [[ $1 = '-n' ]]; then
+    opt_db=1
+    check_env
+    exit 0
+fi
+
+#grep "$@" $PROJECT_BASE/sites/all/{modules/{features,custom},themes/zagat}
+dbg "running the below:\n\tgrep ${@} ${BASE}"
+grep $@ ${BASE}
