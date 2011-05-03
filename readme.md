@@ -5,7 +5,7 @@
 Shell scripts that often come in handy, working with drupal.
 
 All scripts here are fairly simple in function. They're mostly wrappers around other popular
-drupal utilities (scripts/modules like [drush](http://drupal.org/project/drush\) or [features](http://drupal.org/project/features\)).
+drupal utilities like [drush](http://drupal.org/project/drush) and [features](http://drupal.org/project/features).
 
 Usage
 ------------
