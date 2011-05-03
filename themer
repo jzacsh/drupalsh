@@ -4,13 +4,13 @@
 
 if [[ -z ${1//-*/} ]];then
     if [[ $1 = '-h' || $1 = '--help' ]];then
-        echo "
-        Synopsis: Toggle drupal [module] on/off.
+        printf "
+Synopsis: toggle drupal [module] on/off.
 
-        Usage: $(basename $0) -c [module]
-            -c  Just run a check if the given module is/isn't enabled.
-        " >&2
-        return 1
+Usage: %s -c [module]
+    -c  Just run a _check_ if the given module is on/off.\n"\
+                $(basename $0) >&2
+        exit 1
     fi
 
     o=${1}; shift
@@ -31,8 +31,15 @@ n=${1:-devel_themer}
 
 #run "check only" option
 if (( opt_check ));then
-    drush pm-list | grep -i "${n}"
-    exit $?
+    drush pm-list 2>/dev/null | grep -i "${n}"
+
+    if (( $? )); then
+        printf "error: seems like you don't have %s module in your codebase.\n" \
+            ${n} >&2
+        exit 1
+    fi
+
+    exit 0
 fi
 
 #run normally
