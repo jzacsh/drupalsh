@@ -13,8 +13,8 @@ Usage: %s -c [module]
         exit 1
     fi
 
-    o=${1}; shift
-    case ${o/-/} in
+    o=${1/-/}; shift
+    case ${o} in
         c):
             #only _CHECK_ if our module is on
             opt_check=1
