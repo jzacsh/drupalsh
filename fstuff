@@ -3,8 +3,8 @@
 # easy "project" searching; wrapping `grep` with my PROJECT_BASE vars.
 
 #@TODO: remove this crap from all scripts!
-source ~/bin/local/libbzsh
-[[ -r ~/bin/local/libbzsh ]] || return 99
+[[ -r ~/bin/lib/libbzsh ]] && source ~/bin/lib/libbzsh || exit 109
+
 
 OPT_DB=0
 OPT_VB=0
@@ -13,17 +13,18 @@ OPT_VB=0
 
 usage() {
     printf "
-    synopsis:\n\t\`find\` code and stuff. wrapper to run grep on the usual code base.\n
-    usage: %s -[m] [grep opts] [-e] search_terms [grep params]
-    \tparameters:
-    \t\tsearch_terms is a string you would like to find
-    \toptional:
-    \t\t-e used to indicate multiple search_terms [see grep (1) ]
-    \t\t--massive run grep on all of PROJECT_BASE
-    \t\t-n clean-run: check for env vars that will be used and exit.
-    \t\t (NOTE: This option only works when no other params are passed).
-    \t\t\`grep\` is run, by default on CB environment parameter.
-    " $(basename $0) >&2
+synopsis:
+    \`find\` code and stuff. wrapper to run grep on the usual code base.\n
+usage: %s -[m] [grep opts] [-e] search_terms [grep params]
+    parameters:
+        search_terms is a string you would like to find
+    optional:
+        -e used to indicate multiple search_terms [see grep (1) ]
+        --massive run grep on all of PROJECT_BASE
+        -n clean-run: check for env vars that will be used and exit.
+         (NOTE: This option only works when no other params are passed).
+        \`grep\` is run, by default on CB environment parameter.
+" $(basename $0) >&2
     exit 2
 }
 
