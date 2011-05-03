@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+#
+# functions and helpers made specifically for drupal development
+# @TODO: update this one last time with the latest from ~/.host/host.cnyitjza
+# @TODO: cannot call these as stand-alone (PITA). Turn these into scripts.
+#
+
+#drupal cvs
+dcvs() {
+  #TODO delte all of this... cvs is gone.
+  if [[ -z $1 ]];then
+    echo -e "usage: dvcs module_name\n\tloads a drupal contrib module, module_name, from CVS HEAD." >&2
+    return 1
+  fi
+
+  local module_name="$1"
+  shift
+
+  cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal-contrib\
+    checkout "contributions/modules/$module_name" ${@} #allow extra arguments
+}
+
+#prep your local for cozy use.
+#@TODO: this is broken; fix during the port
+cozy_local() {
+    if [[ $1 = '-h'  || $1 = '--help' ]];then
+        echo -e "usage \`$FUNCNAME [password, [db_name, ...] ]\`
+        sets the password for your drupal admin users" >&2
+        return 1
+    fi
+
+    #inserts
+    local password=${1:-password}
+    if (( $# > 1 ));then
+        shift
+        local databases=("${@}")
+    else
+        #defaults
+        local databases=('hamster' 'kitten')
+        #@TODO: make this use-able for others. (utilize dynamic PROJECT_BASE
+        # solutionsm, and grab the settings.php database names).
+    fi
+
+    declare -a queries
+
+    #
+    #listing of queries you normally run:
+    # @TODO: take these from somewhere else?
+    #
+
+    #set password to something useful.
+    queries+=("
+        UPDATE users
+        SET pass=md5('${password}')
+        WHERE
+            name='admin'
+        OR
+            mail='%$(whoami)%'
+    ;")
+    #un-sanitize/simplify your own login
+    queries+=("
+        UPDATE users
+        SET mail='$(whoami)@mail.com'
+        WHERE mail LIKE '%$(whoami)%'
+    ;")
+
+    #actual work
+    for db in $databases; do
+        for query in "${queries[@]}"; do
+            mysql -u root --password=root --database="${db}" -e "$query"
+        done
+    done
+}
+
