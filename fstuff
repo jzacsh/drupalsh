@@ -40,7 +40,7 @@ fi
 # for now, PROJECT_BASE is a safe bet:
 if [[ ! $(declare -p PROJECT_BASE) ]];then
     dbg 'found one of your env. vars'
-    if [[ $1 == "--massive" ]];then
+    if [[ ! $(declare -p CB) || $1 == "--massive" ]];then
         dbg 'setting "massive" search param'
         BASE=${PROJECT_BASE}
         shift
@@ -52,11 +52,12 @@ else
     dbg 'found NO env vars (CB or PROJECT_BASE).'
 fi
 
-#act as direct wrapping to grep
+#act as an even thinner direct wrapper to grep
 if [[ -z $BASE ]];then
     BASE='' #safe null
     if [[ if_debug ]] ;then
-        warn "no 'code base' env vars found..\n assuming you provided the files to search, see grep(1)."
+        warn "no 'code base' env vars found..
+assuming you provided the files to search, see grep(1)."
     fi
 fi
 
@@ -80,3 +81,4 @@ fi
 #grep "$@" $PROJECT_BASE/sites/all/{modules/{features,custom},themes/zagat}
 dbg "running the below:\n\tgrep ${@} ${BASE}"
 grep $@ ${BASE}
+
