@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# utilities surrounding manipulation of a drupal project root
+
+exit 99 #@TODO: remove when finished developing.
+
+#sanity checks
+type drus >& /dev/null || { printf "error: can't find drush!\n" >&2; exit 1; }
+DRUPAL_ROOT=$(drush status --pipe | grep drupal_root | sed -e 's/.*=//')
+if [[ -z $DRUPAL_ROOT ]]; then
+    printf "Error: You do not seem to be in a drupal project directory.\n" >&2
+    exit 1
+fi
