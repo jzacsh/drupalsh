@@ -8,13 +8,14 @@ if [[ -z ${1//-*/} ]];then
 Synopsis: toggle drupal [module] on/off.
 
 Usage: %s -c [module]
-    -c  Just run a _check_ if the given module is on/off.\n"\
+    -c  Just run a _check_ if the given module is on/off.
+    [module] defaults to 'devel_themer'.\n"\
                 $(basename $0) >&2
         exit 1
     fi
 
-    o=${1}; shift
-    case ${o/-/} in
+    o=${1/-/}; shift
+    case ${o} in
         c):
             #only _CHECK_ if our module is on
             opt_check=1
