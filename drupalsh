@@ -87,7 +87,7 @@ cozy_local() {
 #
 
 # jump you to your current stable or edge code-base.
-dpr() {
+dp() {
     #@TODO: look at the TODO in PROJECT_BASE declaration -- PROJECT_BASE needs
     # to be dynamic, because of utilities like this function.
 
