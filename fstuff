@@ -1,13 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash -x
+  #!/usr/bin/env bash
+
+#@TODO: GO BACK TO STRINGS - NOT ARRAYS
+
 #
 # easy "project" searching; wrapping `grep` with my PROJECT_BASE vars.
 
 #@TODO: remove this crap from all scripts!
 [[ -r ~/bin/lib/libbzsh ]] && source ~/bin/lib/libbzsh || exit 109
-
-
-OPT_DB=0
-OPT_VB=0
+OPT_DB=1
+OPT_VB=1
 
 ####################################################################################
 
@@ -39,27 +41,24 @@ fi
 ####################################################################################
 
 # for now, PROJECT_BASE is a safe bet:
-if [[ ! $(declare -p PROJECT_BASE) ]];then
+if [[ -n $PROJECT_BASE ]];then
     dbg 'found one of your env. vars'
-    if [[ ! $(declare -p CB) || $1 == "--massive" ]];then
-        dbg 'setting "massive" search param'
-        BASE=${PROJECT_BASE}
-        shift
+    if [[ -n $CB && $1 != "--massive" ]];then
+        dbg 'setting "${CB[@]}" search param'
+        BASE=("${CB[@]}")
     else
-        dbg 'setting "$CB" search param'
-        BASE=$CB
+        dbg 'setting "massive" search param'
+        BASE=("${PROJECT_BASE}")
+        shift #@TODO: why am i doing this?
     fi
 else
     dbg 'found NO env vars (CB or PROJECT_BASE).'
 fi
 
 #act as an even thinner direct wrapper to grep
-if [[ -z $BASE ]];then
-    BASE='' #safe null
-    if [[ if_debug ]] ;then
+if [[ -z $BASE && if_debug ]] ;then
         warn "no 'code base' env vars found..
 assuming you provided the files to search, see grep(1)."
-    fi
 fi
 
 check_env() {
@@ -80,6 +79,6 @@ if (( $# == 1 )) && [[ $1 = '-n' ]]; then
 fi
 
 #grep "$@" $PROJECT_BASE/sites/all/{modules/{features,custom},themes/zagat}
-dbg "running the below:\n\tgrep ${@} ${BASE}"
-grep $@ ${BASE}
+dbg "running the below:\n\tgrep ${@} ${BASE[@]}"
+grep $@ ${BASE[@]}
 
