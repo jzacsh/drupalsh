@@ -13,6 +13,6 @@ fi
 creds=$(sed  -n '/mysql/ { n;N;N;p }' ~/.netrc)
 
 innotop \
-    --user=$(printf "${creds/*machine /}" | head -n 1) \
+    --user=$(printf "${creds/*login /}" | head -n 1) \
     --password=$(printf "${creds/*password /}" | head -n 1) \
-    --host=$(printf "${creds/*password /}" | head -n 1)
+    --host=$(printf "${creds/*machine /}" | head -n 1)
