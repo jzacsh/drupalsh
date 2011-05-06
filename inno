@@ -3,7 +3,7 @@
 #quick launch for root mysql innotop
 
 if [[ ! -r ~/.netrc ]];then
-    printf "error: ~/.netrc could not be found.\n" >&2
+    printf 'error: ~/.netrc could not be found.\n' >&2
     exit 1
 elif [[ ! $(type innotop) ]];then
     printf 'error: I am a wrapper around `innotop`, which was not found.\n' >&2
