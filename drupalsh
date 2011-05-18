@@ -45,7 +45,7 @@ cozy_local() {
         local databases=("${@}")
     else
         #defaults
-        local databases=('hamster' 'kitten')
+        local databases=(hamster kitten)
         #@TODO: make this use-able for others. (utilize dynamic PROJECT_BASE
         # solutionsm, and grab the settings.php database names).
     fi
@@ -69,14 +69,14 @@ cozy_local() {
     #un-sanitize/simplify your own login
     queries+=("
         UPDATE users
-        SET mail='$(whoami)@mail.com'
+        SET mail='$(whoami)@zagat.com'
         WHERE mail LIKE '%$(whoami)%'
     ;")
 
     #actual work
-    for db in $databases; do
+    for db in ${databases[@]}; do
         for query in "${queries[@]}"; do
-            mysql -u root --password=root --database="${db}" -e "$query"
+            mysql --verbose -u root --password=root --database="${db}" -e "$query"
         done
     done
 }
