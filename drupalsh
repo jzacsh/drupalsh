@@ -32,6 +32,8 @@ dcvs() {
 #prep your local for cozy use.
 #@TODO: this is broken; fix during the port
 cozy_local() {
+    local vb='--verbose'
+
     if [[ $1 = '-h'  || $1 = '--help' ]];then
         echo -e "usage \`$FUNCNAME [password, [db_name, ...] ]\`
         sets the password for your drupal admin users" >&2
@@ -76,7 +78,7 @@ cozy_local() {
     #actual work
     for db in ${databases[@]}; do
         for query in "${queries[@]}"; do
-            mysql --verbose -u root --password=root --database="${db}" -e "$query"
+            mysql "${vb}" -u root --password=root --database="${db}" -e "$query"
         done
     done
 }
