@@ -9,7 +9,10 @@ drupal utilities like [drush](http://drupal.org/project/drush) and [features](ht
 
 Usage
 ------------
-Rmff.. I'll write something here soon.
+Usage statements for most scripts and functions can found by passing `-h` or
+`--help`. Often times, especially for short functions, there's no point in
+writing a usage print-out; its easier to just `type [function-name]` in your
+shell.
 
 Installation
 ------------
