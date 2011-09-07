@@ -10,7 +10,7 @@ elif [[ ! $(type innotop) ]];then
     exit 1
 fi
 
-creds=$(sed  -n '/mysql/ { n;N;N;p }' ~/.netrc)
+creds=$(sed -n '/mysql/ { n;N;N;p }' ~/.netrc)
 
 innotop \
     --user=$(printf "${creds/*login /}" | head -n 1) \
