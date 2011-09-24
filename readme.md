@@ -38,3 +38,4 @@ TODO
 - Place documentation/examples in here on power of PROJECT_BASE stuff.
 - make PROJECT_BASE more powerful by porting it to dynamic scripts that sit in
   this repository ( eg.: commit 8164176 ) .
+  - this should probably be ```$(drupal drupal-directory)```

@@ -1,15 +1,18 @@
 #!/bin/bash -x
   #!/usr/bin/env bash
 
-#@TODO: GO BACK TO STRINGS - NOT ARRAYS
+dbg() ( printf "::DEBUG::\t${*}\n"; ) #@TODO: remove me!!    
 
 #
 # easy "project" searching; wrapping `grep` with my PROJECT_BASE vars.
 
-#@TODO: remove this crap from all scripts!
-[[ -r ~/bin/lib/libbzsh ]] && source ~/bin/lib/libbzsh || exit 109
-OPT_DB=1
-OPT_VB=1
+PROJECT_BASE=$(drush drupal-directory)
+
+CB=(
+  "${PROJECT_BASE}/sites/all/modules/features"
+  "${PROJECT_BASE}/sites/all/modules/custom"
+  "${PROJECT_BASE}/sites/all/themes/"
+)
 
 ####################################################################################
 
@@ -40,7 +43,7 @@ fi
 
 ####################################################################################
 
-# for now, PROJECT_BASE is a safe bet:
+# set a single abstraction point, BASE to grep off of.:
 if [[ -n $PROJECT_BASE ]];then
     dbg 'found one of your env. vars'
     if [[ -n $CB && $1 != "--massive" ]];then
@@ -61,24 +64,19 @@ if [[ -z $BASE && if_debug ]] ;then
 assuming you provided the files to search, see grep(1)."
 fi
 
-check_env() {
-    dbg "testing if PROJECT_BASE (project codebase) has been set:"
-    if_debug && declare -p PROJECT_BASE
+#############################
+# @TODO: remove this debugging stuff!!    
+dbg "testing if PROJECT_BASE (project codebase) has been set:"
+if_debug && declare -p PROJECT_BASE
 
-    dbg "testing if CB (main codebase) has been set:"
-    if_debug && declare -p CB
+dbg "testing if CB (main codebase) has been set:"
+if_debug && declare -p CB
 
-    dbg "testing if BASE has been decided:"
-    if_debug && declare -p BASE
-}
-
-if (( $# == 1 )) && [[ $1 = '-n' ]]; then
-    opt_db=1
-    check_env
-    exit 0
-fi
+dbg "testing if BASE has been decided:"
+if_debug && declare -p BASE
+#############################
 
 #grep "$@" $PROJECT_BASE/sites/all/{modules/{features,custom},themes/zagat}
 dbg "running the below:\n\tgrep ${@} ${BASE[@]}"
-grep $@ ${BASE[@]}
+grep "$@" ${BASE[@]}
 
