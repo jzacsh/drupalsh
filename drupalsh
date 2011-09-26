@@ -15,6 +15,7 @@ dbase() {
     drush drupal-directory
   else
     echo 'Error: do not seem to be in a drupal codebase.' >&2
+    return 1
   fi
 }
 
