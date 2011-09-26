@@ -12,9 +12,9 @@
 # PROJECT_BASE=$(drush status --pipe | grep drupal_root | sed -e 's/.*=//')
 dbase() {
   local in_drupal
-  in_drupal=$(drush sql-connect >&/dev/null)
+  in_drupal=$(drush sql-connect 2>&1 > /dev/null)
   if (( $? ));then
-    echo 'Error: do not seem to be in a drupal codebase.' >&2
+    printf 'Error: %s.\n' "$in_drupal" >&2
     return 1
   else
     drush drupal-directory
