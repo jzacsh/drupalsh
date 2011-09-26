@@ -10,7 +10,13 @@
 
 #@TODO: use this!
 # PROJECT_BASE=$(drush status --pipe | grep drupal_root | sed -e 's/.*=//')
-alias db='drush drupal-directory'
+dbase() {
+  if [[ $(drush sql-connect >&/dev/null) ]];then
+    drush drupal-directory
+  else
+    echo 'Error: do not seem to be in a drupal codebase.' >&2
+  fi
+}
 
 #@TODO: breaks my heart to make this an entire script... think of something else!
 alias pfetch='time { drush cc all && drush -y fra && drush -y cc all && drush -y updb && hg push && hg stat; }'
@@ -79,7 +85,7 @@ dp() {
     # to be dynamic, because of utilities like this function.
 
     local repo
-    repo=$(dp)
+    repo=$(dbase)
 #   if [[ $1 = 'edge' ]];then
 #       repo=$PROJECT_EDGE
 #       shift
