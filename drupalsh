@@ -11,11 +11,13 @@
 #@TODO: use this!
 # PROJECT_BASE=$(drush status --pipe | grep drupal_root | sed -e 's/.*=//')
 dbase() {
-  if [[ $(drush sql-connect >&/dev/null) ]];then
-    drush drupal-directory
-  else
+  local in_drupal
+  in_drupal=$(drush sql-connect >&/dev/null)
+  if (( $? ));then
     echo 'Error: do not seem to be in a drupal codebase.' >&2
     return 1
+  else
+    drush drupal-directory
   fi
 }
 
