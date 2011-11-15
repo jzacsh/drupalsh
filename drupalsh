@@ -21,6 +21,15 @@ dbase() {
   fi
 }
 
+#run an xdebug-breakable drush command
+xdrush () {
+  local key
+  key="$(grep idekey /etc/php5/conf.d/xdebug.ini)"
+  key="${key/*./}"
+  key="${key//\"/}"
+  XDEBUG_CONFIG="$key" drush "${@}"
+}
+
 #@TODO: breaks my heart to make this an entire script... think of something else!
 alias pfetch='time { drush cc all && drush -y fra && drush -y cc all && drush -y updb && hg push && hg stat; }'
 
