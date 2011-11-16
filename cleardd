@@ -13,9 +13,21 @@ if [[ $1 = '-h' || $1 = '--help' ]];then
     exit 1
 fi
 
+httpd_uid() {
+  local usr env_conf
+
+  env_conf="/etc/apache2/envvars"
+  if [[ -r "$env_conf" && $(type id 2>/dev/null) ]];then
+    usr="$(grep export\ APACHE_RUN_USER= "$env_conf")"
+    printf '%s' "$(id -u ${usr/*=/})"
+  else
+    printf '33'
+  fi
+}
+
 # default values
 def_file="/tmp/drupal_debug.txt"
-def_uid="33" #uid for www-data
+def_uid="$(httpd_uid)" #uid for apache
 
 # set values
 (( $# )) || echo "... no params defaulting to: ${def_file}"
