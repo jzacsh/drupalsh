@@ -31,13 +31,13 @@ def_uid="$(httpd_uid)" #uid for apache
 
 # set values
 (( $# )) || echo "... no params defaulting to: ${def_file}"
-file=${1:-$def_file} #default param
-file_uid=$(stat -c %u ${file} 2>/dev/null)
+file="${1:-$def_file}" #default param
+file_uid="$(stat -c %u "$file" 2>/dev/null)"
 (( $file_uid )) || unset file_uid #avoid root owned file
-uid=${file_uid:-$def_uid}
+uid="${file_uid:-$def_uid}"
 
 # actual actions
-echo "... using owner uid: ${uid}" #debug info
-file ${file} >&/dev/null && sudo rm -v ${file} #empty out _existing_ file
-sudo -u#${uid} touch ${file} && tail -f ${file}
+echo "... using owner uid: $uid" #debug info
+file "$file" >&/dev/null && sudo rm -v "$file" #empty out _existing_ file
+sudo -u#${uid} touch "$file" && tail -f "$file"
 
