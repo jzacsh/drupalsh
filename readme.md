@@ -37,5 +37,5 @@ TODO
 - Make sure that utility-relying scripts fail w/o those utilities
 - Place documentation/examples in here on power of PROJECT_BASE stuff.
 - make PROJECT_BASE more powerful by porting it to dynamic scripts that sit in
-  this repository ( eg.: commit 8164176 ) .
+  this repository (eg.: [commit 8164176](https://github.com/jzacsh/drupalsh/commit/81641769dda086173095714789f46a6613aa1653)).
   - this should probably be ```$(drush drupal-directory)```
